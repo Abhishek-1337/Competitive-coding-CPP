@@ -1,7 +1,7 @@
 #include<iostream>
 #include<bits/stdc++.h>
-using namespace std;
 
+using namespace std;
 
 struct Node{
 	struct Node *lchild, *rchild;
@@ -9,7 +9,6 @@ struct Node{
 }*root=NULL;
 
 void insert(int key){
-    // cout << key;
 	struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
 	newNode->data = key;
 	newNode->lchild = NULL;
@@ -26,16 +25,13 @@ void insert(int key){
 			if(key < currNode->data){
 				if(currNode->lchild == NULL){
 					currNode->lchild = newNode;
-					
-				// 	return newNode->data;
-				 return;
+    				return;
 				}
 				currNode = currNode->lchild;
 			}
 			else if(key > currNode->data){
 				if(currNode->rchild == NULL){
 					currNode->rchild = newNode;
-				// 	cout <<newNode->data<<"\n";
 					return;
 				}
 				currNode = currNode->rchild;
@@ -47,6 +43,77 @@ void insert(int key){
 		}
 	}
 	return;
+}
+
+struct Node *rInsert(struct Node *currNode, int key){
+	if(currNode == NULL){
+		currNode = (struct Node*)malloc(sizeof(struct Node *));
+		currNode -> data = key;
+		currNode -> lchild = currNode -> rchild = NULL;
+		return currNode;
+	}
+	if(key < currNode -> data){
+		currNode -> lchild = rInsert(currNode -> lchild, key);
+	}
+	else if(key > currNode->data){
+		currNode -> rchild = rInsert(currNode -> rchild, key);
+	}
+
+	return currNode;
+}
+
+int Height(struct Node *currNode){
+	if(currNode == NULL){
+		return 0;
+	}
+	return 1 + max(Height(currNode -> lchild), Height(currNode -> rchild));
+}
+
+struct Node *InPre(struct Node *currNode){
+	while(currNode && currNode->rchild != NULL){
+		currNode = currNode -> rchild;
+	}
+	return currNode;
+}
+
+struct Node *InSuc(struct Node * currNode){
+	while(currNode && currNode -> lchild != NULL){
+		currNode = currNode -> lchild;
+	}
+	return currNode;
+}
+
+struct Node *del(struct Node* currNode, int key){
+
+	struct Node * q;
+	if(currNode == NULL) return NULL;
+	if(currNode -> lchild == NULL && currNode -> rchild == NULL){
+		if(currNode == root){
+			return NULL;
+		}
+		free(currNode);
+		return NULL;
+	}
+	if(key > currNode -> data){
+		currNode ->rchild = del(currNode -> rchild, key);
+	}
+	else if(key < currNode->data){
+		currNode -> lchild = del(currNode -> lchild, key);
+	}
+	else{
+		if(Height(currNode -> lchild) > Height(currNode -> rchild)){
+			q = InPre(currNode -> lchild);
+			currNode -> data = q -> data;
+			currNode -> lchild = del(currNode -> lchild, q -> data);
+		}
+		else{
+			q = InSuc(currNode -> rchild);
+			currNode -> data = q -> data;
+			currNode -> rchild = del(currNode -> rchild, q -> data);
+		}
+	}
+
+	return currNode;
 }
 
 int Search(int sata){//search data
@@ -158,19 +225,34 @@ vector<int> iterativePostorder(struct Node *currNode){
 	 return v;
 }
 
+vector<int> levelOrder(struct Node *currNode){
+	vector<int> v;
+	queue<struct Node*> q;
+	q.push(currNode);
+	while(!q.empty()){
+		currNode = q.front();
+		q.pop();
+		v.push_back(currNode->data);
+		if(currNode->lchild != NULL){
+			q.push(currNode->lchild);
+		}
+		if(currNode->rchild != NULL){
+			q.push(currNode->rchild);
+		}
+	}
+	return v;
+}
+
 int main(){
 	cout <<"Hello"<<"\n";
-	insert(10);
-	// cout << root->data <<"\n";
+	root = rInsert(root,10);
 	insert(11);
 	insert(12);
 	insert(5);
 	insert(3);
 	insert(4);
 	vector<int> arr = Inorder(root);
-	// for(int i = 0; i < arr.size(); i++){
-	// 	cout << arr[i] <<"\n";
-	// }
+
 	int flag = Search(4);
 	if(flag == 1){
 		cout <<"Element is present on the tree";
@@ -178,18 +260,14 @@ int main(){
 	else{
 		cout <<"Element is not present in tree" <<"\n";
 	}
-	// vector<int> inorder = iterativeInorder(root);
-	// for(int i = 0; i < inorder.size(); i++){
-	// 	cout << "\n" << inorder[i] ;
-	// }
 
-	// vector<int> preorder = iterativePreorder(root);
-	// for(int i = 0; i < preorder.size(); i++){
-	// 	cout << "\n" << preorder[i] ;
-	// }
-    vector<int> post = iterativePostorder(root);
+
+	del(root, 10);
+    vector<int> post = levelOrder(root);
     for(int i = 0; i < post.size(); i++){
 		cout << "\n" << post[i] ;
 	}
+
+
 	return 0;
 }
