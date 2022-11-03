@@ -31,30 +31,29 @@ using namespace std;
 //memoized code for subset sum
 // int dp[2000][2000];
 
-int partitionSum(int sum1, int arr[], int sum2, int n){
-	cout << sum1 << " " << sum2 << endl;
-	if(sum1 == sum2){
+int partitionSum(int sum, int arr[], int n){
+	cout << sum << endl;
+	if(sum == 0){
 		return 1;
 	}
 
 	if(n == 0) return 0;
-	return partitionSum(sum1+arr[n-1], arr, sum2, n-1) || partitionSum(sum1, arr , sum2+arr[n-1], n-1);
+	return partitionSum(sum-arr[n-1], arr, n-1) || partitionSum(sum, arr, n-1);
 }
 
 int main(){
-	int n, sum1 = 0, sum2 = 0;
+	int n, sum = 0;
 	cin >> n; 
 	int arr[n];
 	for(int i = 0; i < n; i++){
 		cin >> arr[i];
+		sum += arr[i];
 	}
-	// cin >> sum;
-	// for(int i = 0; i < 2000; i++){
-	// 	for(int j = 0; j < 2000; j++){
-	// 	 dp[i][j] = -1;
-	//     }
-	// }
-	if(partitionSum(sum1+arr[n-1], arr, sum2, n-1) || partitionSum(sum1, arr, sum2+arr[n-1], n-1)){
+	if(sum % 2 != 0){
+		cout << "NO\n";
+		return 0;
+	}
+	if(partitionSum(sum/2, arr, n)){
 		cout << "YES\n";
 	}
 	else{
