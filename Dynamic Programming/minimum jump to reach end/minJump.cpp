@@ -11,7 +11,7 @@ int minJumpTab(vector<int>&nums, int n){
     for(int i = 1; i < n; i++){
         for(int j = 0; j < i; j++){
             if(j+nums[j] >= i){
-                if(dp[j] != INT_MAX){  //If index j is reachable from previos elements then only it can be used to reach the end
+                if(dp[j] != INT_MAX){  //If index j is reachable from previous elements then only it can be used to reach the end
                     dp[i] = min(dp[i], dp[j]+1);
                 }
             }
