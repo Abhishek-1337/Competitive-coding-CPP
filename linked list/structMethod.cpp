@@ -68,6 +68,42 @@ Node * deleteLast(Node *head){
     return head;
 }
 
+Node *insertMiddle(Node *head, int position, int data) {
+    Node *ptr = head;
+    Node *newNode = new Node(data);
+    if(position == 0){
+        newNode->next = head;
+        return newNode;
+    }
+    Node *prev;
+    int currIdx = 0;
+    while(currIdx != position && ptr != NULL){
+        prev = ptr;
+        ptr = ptr->next;
+        currIdx++;
+    }
+    newNode->next = prev->next;
+    prev->next = newNode;
+    return head;
+
+
+}
+
+int Search(Node *head, int x){
+    Node *ptr = head;
+    int pos = 1;
+    while(ptr != NULL){
+        if(ptr->data == x){
+            return pos;
+        }
+        else{
+            ptr = ptr->next;
+            pos++;
+        }
+    }
+    return -1;
+}
+
 int main(){
     Node *head = new Node(10);
     head = insertAtBegin(head, 20);
@@ -80,5 +116,8 @@ int main(){
     printList(head);
     deleteLast(head);
     printList(head);
+    head = insertMiddle(head, 3, 60);
+    printList(head);
+    cout << "search element" << Search(head, 10);
     return 0;
 }
