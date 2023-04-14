@@ -72,6 +72,22 @@ void LinkedList::printList(){
     cout << "\n";
 }
 
+
+void LinkedList::deleteAtBegin(){
+    if(head == NULL){
+        return;
+    }
+
+    if(head->next == head){
+        delete head;
+        return; 
+    }
+    head->data = head->next->data;
+    Node *temp = head->next;
+    head->next = head->next->next;
+    delete temp;
+}
+
 int main(){
     LinkedList list;
     list.insertAtBegin(30);
@@ -79,6 +95,9 @@ int main(){
     list.insertAtBegin(10);
     list.insertAtEnd(40);
     list.insertAtEnd(50);
+    list.printList();
+    list.deleteAtBegin();
+    list.deleteAtBegin();
     list.printList();
     return 0;
 }
