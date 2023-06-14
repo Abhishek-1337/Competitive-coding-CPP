@@ -9,7 +9,7 @@ void cycleSort(int *arr, int n)
         int pos = i;
         for (int j = i + 1; j < n; j++)
         {
-            if (arr[i] < key)
+            if (arr[i] < item)
             {
                 pos++;
             }
