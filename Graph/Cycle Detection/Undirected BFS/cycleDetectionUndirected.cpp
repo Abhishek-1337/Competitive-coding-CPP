@@ -8,7 +8,6 @@ class Graph{
     public:
         bool looper();
         bool checkCycleBfs(vector<int> &visited,  int vertex);
-        bool checkCycleDfs(vector<int> &visited, int vertex, pair<int, int> &p);
         Graph(int V);
         void addEdge(int u, int v);
 
@@ -46,8 +45,8 @@ bool Graph::looper(){
     pair<int, int> p(1, -1);
     for(int i = 1; i < V; i++){
         if(visited[i] == 0){
-            // if(checkCycleBfs(visited, i)) return true;  
-            if(checkCycleDfs(visited, i, p)) return true;          
+            if(checkCycleBfs(visited, i)) return true;  
+            // if(checkCycleBfs(visited, i, )) return true;          
         }
     }
 }
@@ -58,17 +57,12 @@ void Graph::addEdge(int u, int v){
 }
 
 int main(){
-    Graph g(12);
+    Graph g(4);
+    g.addEdge(0, 1);
     g.addEdge(1, 2);
-    g.addEdge(2, 4);
-    g.addEdge(3, 5);
-    g.addEdge(5, 10);
-    g.addEdge(5, 6);
-    g.addEdge(10, 9);
-    g.addEdge(6, 7);
-    g.addEdge(9, 8);
-    g.addEdge(7, 8);
-    g.addEdge(8, 11);
+    g.addEdge(2, 3);
+    g.addEdge(3, 1);
+   
 
     // g.BFS();
     bool flag = g.looper();
