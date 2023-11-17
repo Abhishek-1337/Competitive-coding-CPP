@@ -7,8 +7,8 @@ using namespace std;
 void dfs(vector<int> adj[], int s, vector<int> &visited){
     cout << s <<endl;
     visited[s] = 1;
-    for(int i = 0; i < adj[s].size(); i++){
-        if(!visited[adj[s][i]]){
+    for(int i: adj[s]){
+        if(!visited[i]){
             dfs(adj, adj[s][i], visited);
         }
     }

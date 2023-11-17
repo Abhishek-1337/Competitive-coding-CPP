@@ -28,31 +28,14 @@ bool Graph::checkCycleBfs(vector<int> & visited, int vertex){
         int node = qp.front().first;
         int prev = qp.front().second;
         qp.pop();
-        for(auto it: arr[vertex]){
-            if(visited[it] == 0){
+        for(auto it: arr[node]){
+            if(!visited[it]){
                 visited[it] = 1;
                 qp.push({it, node});
             }
             else if(prev != it){
                 return true;
             }
-        }
-    }
-    return false;
-}
-
-bool Graph::checkCycleDfs(vector<int> &visited, int vertex, pair<int, int> &p){
- 
-    visited[vertex] = 1;
-    for(auto x:arr[vertex]){
-        if(!visited[x]){
-            visited[x] = 1;
-            p.first = x;
-            p.second = vertex;
-            if(checkCycleDfs(visited, x, p)) return true;
-        }
-        else if(x != p.second){
-            return true;
         }
     }
     return false;
