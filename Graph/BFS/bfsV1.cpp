@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
 
 void bfs(vector<int> adj[], int s){
+	
 	queue<int> q;
 	q.push(s);
 	int visited[5]={0};
